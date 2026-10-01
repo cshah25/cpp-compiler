@@ -1,6 +1,8 @@
 #pragma once
+#include <cctype>
 #include <string>
 #include <vector>
+#include <optional>
 
 enum class TokenType {
   exit,
@@ -23,53 +25,72 @@ public:
     std::vector<Token> tokens;
 
     std::string buf;
-    for (int i = 0; i < str.length(); i++) {
-      char c = str.at(i);
-      if (std::isalpha(c)) {
-        buf.push_back(c);
-        i++;
-        while (std::isalnum(str.at(i))) {
-          buf.push_back(str.at(i));
-          i++;
-        }
-        i--;
 
-        if (buf == "exit") {
-          tokens.push_back({.type = TokenType::exit});
-          buf.clear();
-        } else {
-          std::cerr << "You messed up!" << std::endl;
-          exit(EXIT_FAILURE);
+    while(peak().has_value()) {
+      if (std::isalpha(peak().value())) {
+        buf.push_back(consume());
+        while (peak().has_value() && std::isalnum(peak())) {
+          buf.push_back(consume());
         }
-      }
-      else if (std::isdigit(c)) {
-        buf.push_back(c);
-        i++;
-        while (std::isdigit(str.at(i))) {
-          buf.push_back(str.at(i));
-          i++;
-        }
-        i--;
-        tokens.push_back({.type = TokenType::int_lit, .value = buf});
-        buf.clear();
-      }
-      else if (c == ';') {
-        tokens.push_back({.type = TokenType::semi});
-      }
-      else if (std::isspace(c)) {
-        continue;
-      } else {
-        std::cerr << "You messed up!" << std::endl;
-        exit(EXIT_FAILURE);
       }
     }
 
-    return tokens;
+    // for (int i = 0; i < str.length(); i++) {
+    //   char c = str.at(i);
+    //   if (std::isalpha(c)) {
+    //     buf.push_back(c);
+    //     i++;
+    //     while (std::isalnum(str.at(i))) {
+    //       buf.push_back(str.at(i));
+    //       i++;
+    //     }
+    //     i--;
+
+    //     if (buf == "exit") {
+    //       tokens.push_back({.type = TokenType::exit});
+    //       buf.clear();
+    //     } else {
+    //       std::cerr << "You messed up!" << std::endl;
+    //       exit(EXIT_FAILURE);
+    //     }
+    //   }
+    //   else if (std::isdigit(c)) {
+    //     buf.push_back(c);
+    //     i++;
+    //     while (std::isdigit(str.at(i))) {
+    //       buf.push_back(str.at(i));
+    //       i++;
+    //     }
+    //     i--;
+    //     tokens.push_back({.type = TokenType::int_lit, .value = buf});
+    //     buf.clear();
+    //   }
+    //   else if (c == ';') {
+    //     tokens.push_back({.type = TokenType::semi});
+    //   }
+    //   else if (std::isspace(c)) {
+    //     continue;
+    //   } else {
+    //     std::cerr << "You messed up!" << std::endl;
+    //     exit(EXIT_FAILURE);
+    //   }
+    // }
+
+    // return tokens;
   }
 private:
-  std::optional<char> peak() const {
-
+  [[nodiscard]] std::optional<char> peak(int ahead = 1) const {
+    if (m_index + ahead >= m_src.length()) {
+      return {};
+    } else {
+      return m_src.at(m_index);
+    }
   }
-  const std::string m_src;
 
+  char consume() {
+    return m_src.at(m_index++);
+  }
+
+  const std::string m_src;
+  int m_index;
 }
