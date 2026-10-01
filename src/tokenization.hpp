@@ -53,9 +53,11 @@ public:
         buf.clear();
         continue;
       } else if (peak().value() == ';') {
+        consume();
         tokens.push_back({ .type = TokenType::semi });
         continue;
       } else if (std::isspace(peak().value())) {
+        consume();
         continue;
       } else {
         std::cerr << "You messed up!" << std::endl;
@@ -67,7 +69,7 @@ public:
   }
 private:
   [[nodiscard]] std::optional<char> peak(int ahead = 1) const {
-    if (m_index + ahead >= m_src.length()) {
+    if (m_index + ahead > m_src.length()) {
       return {};
     } else {
       return m_src.at(m_index);
