@@ -1,2 +1,2 @@
-return 250;
+exit 2;
 
