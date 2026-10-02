@@ -16,7 +16,7 @@ public:
 
   }
 
-  std::optional(NodeExpr) parse_expr() {
+  std::optional<NodeExpr> parse_expr() {
     if (peak().has_value() && peak().value().type == TokenType::int_lit) {
       return NodeExpr{ .int_lit = consume() };
     } else {
@@ -35,14 +35,16 @@ public:
           std::cerr << "Invalid expression" << std::endl;
           exit(EXIT_FAILURE);
         }
-        if (!peak().has_value() || && peak().value().type != TokenType::semi) {
+        if (peak().has_value() && peak().value().type == TokenType::semi) {
+          consume();
+        } else {
           std::cerr << "Invalid expression" << std::endl;
           exit(EXIT_FAILURE);
         }
       }
     }
     m_index = 0;
-    return NodeExit;
+    return exit_node;
   }
 private:
   [[nodiscard]] inline std::optional<Token> peak(int ahead = 1) const {
