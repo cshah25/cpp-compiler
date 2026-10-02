@@ -3,7 +3,7 @@
 #include "parser.hpp"
 class Generator {
 public:
-  inline Generator(NodeExit root) 
+  inline explicit Generator(NodeExit root) 
     : m_root(std::move(root)) {
     
   }
