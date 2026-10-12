@@ -1,14 +1,16 @@
 #pragma once
 #include <sstream>
 #include "parser.hpp"
-class Generator {
+class Generator
+{
 public:
-  inline explicit Generator(NodeExit root) 
-    : m_root(std::move(root)) {
-    
+  inline explicit Generator(NodeExit root)
+      : m_root(std::move(root))
+  {
   }
 
-  [[nodiscard]] std::string generate() const {
+  [[nodiscard]] std::string generate() const
+  {
     std::stringstream output;
     output << "global _start\n_start:\n";
     output << "    mov rax, 60\n";
@@ -16,6 +18,7 @@ public:
     output << "    syscall";
     return output.str();
   }
+
 private:
   const NodeExit m_root;
 };

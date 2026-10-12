@@ -6,8 +6,10 @@
 
 #include "./generation.hpp"
 
-int main(int argc, char ** argv) {
-  if (argc != 2) {
+int main(int argc, char **argv)
+{
+  if (argc != 2)
+  {
     std::cerr << "Incorrect usage. Correct usage is..." << std::endl;
     std::cerr << "hydro <input.hy>" << std::endl;
     return EXIT_FAILURE;
@@ -26,7 +28,8 @@ int main(int argc, char ** argv) {
   Parser parser(std::move(tokens));
   std::optional<NodeExit> tree = parser.parse();
 
-  if (!tree.has_value()) {
+  if (!tree.has_value())
+  {
     std::cerr << "No exit statment found" << std::endl;
   }
 
