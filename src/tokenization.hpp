@@ -12,7 +12,9 @@ enum class TokenType
   semi,
   open_paren,
   close_paren,
-  ident
+  ident,
+  let,
+  eq
 };
 
 struct Token
@@ -50,6 +52,12 @@ public:
           buf.clear();
           continue;
         }
+        else if (buf == "let")
+        {
+          tokens.push_back({.type = TokenType::let});
+          buf.clear();
+          continue;
+        }
         else
         {
           tokens.push_back({.type = TokenType::ident, .value = buf});
@@ -82,6 +90,12 @@ public:
       {
         consume();
         tokens.push_back({.type = TokenType::semi});
+        continue;
+      }
+      else if (peek().value() == '=')
+      {
+        consume();
+        tokens.push_back({.type = TokenType::eq});
         continue;
       }
       else if (std::isspace(peek().value()))
