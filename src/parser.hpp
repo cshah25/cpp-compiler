@@ -109,6 +109,8 @@ public:
         exit(EXIT_FAILURE);
       }
       if (peek().has_value() && peek().value().type == TokenType::semi) {
+        consume();
+      } else {
         std::cerr << "Expected `;`" << std::endl;
         exit(EXIT_FAILURE);
       }

@@ -1,4 +1,4 @@
 let x = 10;
-let y = 11
-exit(x);
+let y = 11;
+exit(y);
 
