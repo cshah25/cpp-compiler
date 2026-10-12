@@ -7,6 +7,10 @@ $$
         \text{let}\ [\text{ident}] = [\text{expr}];
     \end{cases} \\
     [\text{exit}] &\to \text{exit}([\text{expr}]); \\
-    [\text{expr}] &\to \text{int\_lit}
+    [\text{expr}] &\to
+    \begin{cases}
+        \text{int\_lit}\\
+        \text{[ident]}
+    \end{cases}
 \end{align}
 $$
