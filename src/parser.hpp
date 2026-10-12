@@ -47,11 +47,11 @@ public:
     return exit_node;
   }
 private:
-  [[nodiscard]] inline std::optional<Token> peek(int ahead = 1) const {
-    if (m_index + ahead > m_tokens.size()) {
+  [[nodiscard]] inline std::optional<Token> peek(int offset = 1) const {
+    if (m_index + offset >= m_tokens.size()) {
       return {};
     } else {
-      return m_tokens.at(m_index);
+      return m_tokens.at(m_index + offset);
     }
   }
 
