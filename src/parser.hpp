@@ -120,7 +120,7 @@ public:
     }
   }
 
-  std::optional<NodeStmt> parse_prog() {
+  std::optional<NodeProg> parse_prog() {
     NodeProg prog;
     while (peek().has_value()) {
       if (auto stmt = parse_stmt()) {
@@ -130,6 +130,7 @@ public:
         exit(EXIT_FAILURE);
       }
     }
+    return prog;
   }
 
 private:
