@@ -27,7 +27,8 @@ public:
   std::optional<NodeExit> parse() {
     std::optional<NodeExit> exit_node;
     while (peek().has_value()) {
-      if (peek().value().type == TokenType::exit) {
+      if (peek().value().type == TokenType::exit && peek(1).has_value() && peek(1).value().type == TokenType::open_paren) {
+        consume();
         consume();
         if (auto node_expr = parse_expr()) {
           exit_node = NodeExit{ .expr = node_expr.value() };
@@ -35,10 +36,16 @@ public:
           std::cerr << "Invalid expression" << std::endl;
           exit(EXIT_FAILURE);
         }
+        if (peek().has_value() && peek().value().type == TokenType::close_paren) {
+          consume();
+        } else {
+          std::cerr << "Expected `)`" << std::endl;
+          exit(EXIT_FAILURE);
+        }
         if (peek().has_value() && peek().value().type == TokenType::semi) {
           consume();
         } else {
-          std::cerr << "Invalid expression" << std::endl;
+          std::cerr << "Expected `;`" << std::endl;
           exit(EXIT_FAILURE);
         }
       }
