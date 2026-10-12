@@ -1,2 +1,3 @@
-exit(10);
+let x = 7;
+exit(x);
 
