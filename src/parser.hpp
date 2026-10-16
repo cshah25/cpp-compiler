@@ -28,14 +28,14 @@ struct BinExprMulti {
   NodeExpr* rhs;
 };
 
-struct BinExpr {
+struct NodeBinExpr {
   std::variant<BinExprAdd*, BinExprMulti*> var;
 };
 
 
 struct NodeExpr
 {
-  std::variant<NodeExprIntLit*, NodeExprIdent*, BinExpr*> var;
+  std::variant<NodeExprIntLit*, NodeExprIdent*, NodeBinExpr*> var;
 };
 
 struct NodeStmtExit
