@@ -19,48 +19,52 @@ struct NodeTermIdent
 
 struct NodeExpr;
 
-struct NodeBinExprAdd {
-  NodeExpr* lhs;
-  NodeExpr* rhs;
+struct NodeBinExprAdd
+{
+  NodeExpr *lhs;
+  NodeExpr *rhs;
 };
 
-struct NodeBinExprMulti {
-  NodeExpr* lhs;
-  NodeExpr* rhs;
+struct NodeBinExprMulti
+{
+  NodeExpr *lhs;
+  NodeExpr *rhs;
 };
 
-struct NodeBinExpr {
-  std::variant<NodeBinExprAdd*, NodeBinExprMulti*> var;
+struct NodeBinExpr
+{
+  std::variant<NodeBinExprAdd *, NodeBinExprMulti *> var;
 };
 
-struct NodeTerm {
-  std::variant<NodeTermIntLit*, NodeTermIdent*> var;
+struct NodeTerm
+{
+  std::variant<NodeTermIntLit *, NodeTermIdent *> var;
 };
 
 struct NodeExpr
 {
-  std::variant<NodeTerm*, NodeBinExpr*> var;
+  std::variant<NodeTerm *, NodeBinExpr *> var;
 };
 
 struct NodeStmtExit
 {
-  NodeExpr* expr;
+  NodeExpr *expr;
 };
 
 struct NodeStmtLet
 {
   Token ident;
-  NodeExpr* expr;
+  NodeExpr *expr;
 };
 
 struct NodeStmt
 {
-  std::variant<NodeStmtExit*, NodeStmtLet*> var;
+  std::variant<NodeStmtExit *, NodeStmtLet *> var;
 };
 
 struct NodeProg
 {
-  std::vector<NodeStmt*> stmts;
+  std::vector<NodeStmt *> stmts;
 };
 
 class Parser
@@ -68,7 +72,7 @@ class Parser
 public:
   inline explicit Parser(std::vector<Token> tokens)
       : m_tokens(std::move(tokens)),
-      m_allocator(1024 * 1024 * 4) // 4 mb
+        m_allocator(1024 * 1024 * 4) // 4 mb
   {
   }
 
@@ -89,52 +93,53 @@ public:
       auto term = m_allocator.alloc<NodeTerm>();
       term->var = term_ident;
       return term;
-    } else 
+    }
+    else
     {
       return {};
     }
   }
 
-  std::optional<NodeExpr*> parse_expr()
+  std::optional<NodeExpr *> parse_expr()
   {
-    if (auto term = parse_term()) {
-      if (peek().has_value() && peek().value().type == TokenType::plus) {
+    if (auto term = parse_term())
+    {
+      if (peek().has_value() && peek().value().type == TokenType::plus)
+      {
         auto bin_expr = m_allocator.alloc<NodeBinExpr>();
         auto bin_expr_add = m_allocator.alloc<NodeBinExprAdd>();
         auto lhs_expr = m_allocator.alloc<NodeExpr>();
         lhs_expr->var = term.value();
         bin_expr_add->lhs = lhs_expr;
         consume();
-        if (auto rhs = parse_expr()) {
+        if (auto rhs = parse_expr())
+        {
           bin_expr_add->rhs = rhs.value();
           bin_expr->var = bin_expr_add;
           auto expr = m_allocator.alloc<NodeExpr>();
           expr->var = bin_expr;
           return expr;
-        } else {
+        }
+        else
+        {
           std::cerr << "Expected Expression" << std::endl;
           exit(EXIT_FAILURE);
         }
-      } else {
+      }
+      else
+      {
         auto expr = m_allocator.alloc<NodeExpr>();
         expr->var = term.value();
         return expr;
       }
-    } else {
+    }
+    else
+    {
       return {};
     }
-    // if (auto bin_expr = parse_bin_expr()) {
-    //   auto expr = m_allocator.alloc<NodeExpr>();
-    //   expr->var = bin_expr.value();
-    //   return expr;
-    // }
-    // else
-    // {
-    //   return {};
-    // }
   }
 
-  std::optional<NodeStmt*> parse_stmt()
+  std::optional<NodeStmt *> parse_stmt()
   {
     if (peek().value().type == TokenType::exit && peek(1).has_value() && peek(1).value().type == TokenType::open_paren)
     {
@@ -150,17 +155,21 @@ public:
         std::cerr << "Invalid expression" << std::endl;
         exit(EXIT_FAILURE);
       }
-      if (peek().has_value() && peek().value().type == TokenType::close_paren) {
+      if (peek().has_value() && peek().value().type == TokenType::close_paren)
+      {
         consume();
       }
-      else {
+      else
+      {
         std::cerr << "Expected `)`" << std::endl;
         exit(EXIT_FAILURE);
       }
-      if (peek().has_value() && peek().value().type == TokenType::semi) {
+      if (peek().has_value() && peek().value().type == TokenType::semi)
+      {
         consume();
       }
-      else{
+      else
+      {
         std::cerr << "Expected `;`" << std::endl;
         exit(EXIT_FAILURE);
       }
@@ -174,16 +183,21 @@ public:
       auto stmt_let = m_allocator.alloc<NodeStmtLet>();
       stmt_let->ident = consume();
       consume();
-      if (auto expr = parse_expr()) {
+      if (auto expr = parse_expr())
+      {
         stmt_let->expr = expr.value();
       }
-      else {
+      else
+      {
         std::cerr << "Invalid expression" << std::endl;
         exit(EXIT_FAILURE);
       }
-      if (peek().has_value() && peek().value().type == TokenType::semi) {
+      if (peek().has_value() && peek().value().type == TokenType::semi)
+      {
         consume();
-      } else {
+      }
+      else
+      {
         std::cerr << "Expected `;`" << std::endl;
         exit(EXIT_FAILURE);
       }
@@ -191,17 +205,23 @@ public:
       stmt->var = stmt_let;
       return stmt;
     }
-    else {
+    else
+    {
       return {};
     }
   }
 
-  std::optional<NodeProg> parse_prog() {
+  std::optional<NodeProg> parse_prog()
+  {
     NodeProg prog;
-    while (peek().has_value()) {
-      if (auto stmt = parse_stmt()) {
+    while (peek().has_value())
+    {
+      if (auto stmt = parse_stmt())
+      {
         prog.stmts.push_back(stmt.value());
-      } else {
+      }
+      else
+      {
         std::cerr << "Invalid statement" << std::endl;
         exit(EXIT_FAILURE);
       }
