@@ -50,7 +50,12 @@ public:
 
       void operator()(const NodeBinExpr *bin_expr) const
       {
-        assert(false); // not implemented
+        gen->gen_expr(bin_expr->add->lhs);
+        gen->gen_expr(bin_expr->add->rhs);
+        gen->pop("rax");
+        gen->pop("rbx");
+        gen->m_output << "    add rax, rbx\n";
+        gen->push("rax");
       };
     };
     ExprVisitor visitor{.gen = this};
