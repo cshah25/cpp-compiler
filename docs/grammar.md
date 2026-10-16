@@ -8,8 +8,7 @@ $$
     \end{cases} \\
     [\text{Expr}] &\to
     \begin{cases}
-        \text{int\_lit}\\
-        \text{[Ident]} \\
+        \text{[Term]}\\
         \text{[BinExpr]}  
     \end{cases}\\
     [\text{BinExpr}] &\to 
@@ -19,6 +18,11 @@ $$
         [\text{Expr}] - [\text{Expr}] \\
         [\text{Expr}] / [\text{Expr}] \\
         [\text{Expr}] \% [\text{Expr}] \\
+    \end{cases} \\
+    [\text{Term}] &\to
+    \begin{cases}
+        \text{int\_lit} \\
+        \text{ident}
     \end{cases}
 \end{align}
 $$
