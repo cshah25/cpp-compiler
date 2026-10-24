@@ -25,15 +25,25 @@ struct NodeBinExprAdd
   NodeExpr *rhs;
 };
 
-// struct NodeBinExprMulti
-// {
-//   NodeExpr *lhs;
-//   NodeExpr *rhs;
-// };
+struct NodeBinExprMulti
+{
+  NodeExpr *lhs;
+  NodeExpr *rhs;
+};
+
+struct NodeBinExprSub {
+    NodeExpr* lhs;
+    NodeExpr* rhs;
+};
+
+struct NodeBinExprDiv {
+    NodeExpr* lhs;
+    NodeExpr* rhs;
+};
 
 struct NodeBinExpr
 {
-  NodeBinExprAdd * add;
+  std::variant<NodeBinExprAdd*, NodeBinExprMulti*, NodeBinExprSub*, NodeBinExprDiv*> var;
 };
 
 struct NodeTerm
@@ -113,7 +123,7 @@ public:
         if (auto rhs = parse_expr())
         {
           bin_expr_add->rhs = rhs.value();
-          bin_expr->add = bin_expr_add;
+          bin_expr->var = bin_expr_add;
           auto expr = m_allocator.alloc<NodeExpr>();
           expr->var = bin_expr;
           return expr;
