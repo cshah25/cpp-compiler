@@ -16,15 +16,19 @@ enum class TokenType
   let,
   eq,
   plus,
-  star
+  star,
+  sub,
+  div
 };
 
 std::optional<int> bin_prec(TokenType type) {
   switch(type) {
+    case TokenType::sub:
     case TokenType::plus:
-      return 1;
+      return 0;
+    case TokenType::div:
     case TokenType::star:
-      return 2;
+      return 1;
     default:
       return {};
   }
@@ -121,6 +125,18 @@ public:
       {
         consume();
         tokens.push_back({.type = TokenType::star});
+        continue;
+      }
+      else if (peek().value() == '-')
+      {
+        consume();
+        tokens.push_back({.type = TokenType::sub});
+        continue;
+      }
+      else if (peek().value() == '/')
+      {
+        consume();
+        tokens.push_back({.type = TokenType::div});
         continue;
       }
       else if (std::isspace(peek().value()))

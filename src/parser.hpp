@@ -148,6 +148,21 @@ public:
         multi->lhs = expr_lhs2;
         multi->rhs = expr_rhs.value();
         expr->var = multi; 
+      } else if (op.type == TokenType::sub) {
+        auto sub = m_allocator.alloc<NodeBinExprSub>();
+        expr_lhs2->var = expr_lhs->var;
+        sub->lhs = expr_lhs2;
+        sub->rhs = expr_rhs.value();
+        expr->var = sub;
+      } else if (op.type == TokenType::div) {
+        auto div = m_allocator.alloc<NodeBinExprDiv>();
+        expr_lhs2->var = expr_lhs->var;
+        div->lhs = expr_lhs2;
+        div->rhs = expr_rhs.value();
+        expr->var = div;
+      }
+      else {
+        assert(false); // unreachable
       }
       expr_lhs->var = expr;
     }
