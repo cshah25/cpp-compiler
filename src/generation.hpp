@@ -55,6 +55,14 @@ public:
       void operator()(const NodeBinExprMulti *multi) const {
         assert(false); //not implemented yet
       };
+      void operator()(const NodeBinExprSub *sub) const
+      {
+        assert(false); // not implemented yet
+      }
+      void operator()(const NodeBinExprDiv *div) const
+      {
+        assert(false); // not implemented yet
+      }
     };
     BinExprVisitor visitor{.gen = this};
     std::visit(visitor, bin_expr->var);
