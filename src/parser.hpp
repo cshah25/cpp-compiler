@@ -203,7 +203,7 @@ public:
         sub->rhs = expr_rhs.value();
         expr->var = sub;
       }
-      else if (op.type == TokenType::div)
+      else if (op.type == TokenType::fslash)
       {
         auto div = m_allocator.alloc<NodeBinExprDiv>();
         expr_lhs2->var = expr_lhs->var;

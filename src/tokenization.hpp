@@ -18,7 +18,7 @@ enum class TokenType
   plus,
   star,
   minus,
-  div,
+  fslash,
   open_curly,
   close_curly,
   if_
@@ -31,7 +31,7 @@ std::optional<int> bin_prec(TokenType type)
   case TokenType::minus:
   case TokenType::plus:
     return 0;
-  case TokenType::div:
+  case TokenType::fslash:
   case TokenType::star:
     return 1;
   default:
@@ -137,7 +137,7 @@ public:
       else if (peek().value() == '/')
       {
         consume();
-        tokens.push_back({.type = TokenType::div});
+        tokens.push_back({.type = TokenType::fslash});
       }
       else if (peek().value() == '{')
       {
