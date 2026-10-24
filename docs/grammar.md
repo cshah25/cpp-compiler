@@ -1,10 +1,11 @@
 $$
 \begin{align}
-    [\text{Prog}] &\to [\text{stmt}]^* \\
+    [\text{Prog}] &\to [\text{Stmt}]^* \\
     [\text{Stmt}] &\to
     \begin{cases}
         \text{exit}([\text{Expr}]); \\
-        \text{let}\ [\text{Ident}] = [\text{Expr}];
+        \text{let}\ [\text{Ident}] = [\text{Expr}]; \\
+        \{[\text{Stmt}]^*\}
     \end{cases} \\
     [\text{Expr}] &\to
     \begin{cases}
