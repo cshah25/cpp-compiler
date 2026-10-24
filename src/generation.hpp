@@ -16,15 +16,17 @@ public:
     struct TermVisitor
     {
       Generator *gen;
-      void operator()(const NodeTermIntLit * term_int_lit) const
+      void operator()(const NodeTermIntLit *term_int_lit) const
       {
         gen->m_output << "    mov rax, " << term_int_lit->int_lit.value.value() << "\n";
         gen->push("rax");
       };
-      void operator()(const NodeTermIdent * term_ident) const
+      void operator()(const NodeTermIdent *term_ident) const
       {
-        auto it = std::find_if(gen->m_vars.cbegin(), gen->m_vars.cend(), [&](const Var & var){ return var.name == term_ident->ident.value.value(); });
-        if (it == gen->m_vars.cend()) {
+        auto it = std::find_if(gen->m_vars.cbegin(), gen->m_vars.cend(), [&](const Var &var)
+                               { return var.name == term_ident->ident.value.value(); });
+        if (it == gen->m_vars.cend())
+        {
           std::cerr << "Undeclared identified: " << term_ident->ident.value.value() << std::endl;
           exit(EXIT_FAILURE);
         }
@@ -32,7 +34,8 @@ public:
         offset << "QWORD [rsp + " << (gen->m_stack_size - (*it).stack_loc - 1) * 8 << "]";
         gen->push(offset.str());
       };
-      void operator()(const NodeTermParen * term_paren) const {
+      void operator()(const NodeTermParen *term_paren) const
+      {
         gen->gen_expr(term_paren->expr);
       };
     };
@@ -54,7 +57,8 @@ public:
         gen->m_output << "    add rax, rbx\n";
         gen->push("rax");
       };
-      void operator()(const NodeBinExprMulti *multi) const {
+      void operator()(const NodeBinExprMulti *multi) const
+      {
         gen->gen_expr(multi->rhs);
         gen->gen_expr(multi->lhs);
         gen->pop("rax");
@@ -104,9 +108,11 @@ public:
     std::visit(visitor, expr->var);
   }
 
-  void gen_scope( const NodeScope * scope) {
+  void gen_scope(const NodeScope *scope)
+  {
     begin_scope();
-    for (const NodeStmt * stmt: scope->stmts) {
+    for (const NodeStmt *stmt : scope->stmts)
+    {
       gen_stmt(stmt);
     }
     end_scope();
@@ -126,7 +132,8 @@ public:
       };
       void operator()(const NodeStmtLet *stmt_let) const
       {
-        auto it = std::find_if(gen->m_vars.cbegin(), gen->m_vars.cend(), [&](const Var & var){ return var.name == stmt_let->ident.value.value(); });
+        auto it = std::find_if(gen->m_vars.cbegin(), gen->m_vars.cend(), [&](const Var &var)
+                               { return var.name == stmt_let->ident.value.value(); });
 
         if (it != gen->m_vars.cend())
         {
@@ -136,11 +143,12 @@ public:
         gen->m_vars.push_back({.name = stmt_let->ident.value.value(), .stack_loc = gen->m_stack_size});
         gen->gen_expr(stmt_let->expr);
       };
-      void operator()(const NodeScope *scope) const 
+      void operator()(const NodeScope *scope) const
       {
         gen->gen_scope(scope);
       };
-      void operator()(const NodeStmtIf * stmt_if) const {
+      void operator()(const NodeStmtIf *stmt_if) const
+      {
         gen->gen_expr(stmt_if->expr);
         gen->pop("rax");
         std::string label = gen->create_label();
@@ -180,21 +188,25 @@ private:
     m_stack_size--;
   }
 
-  void begin_scope(){
+  void begin_scope()
+  {
     m_scopes.push_back(m_vars.size());
   }
 
-  std::string create_label() {
+  std::string create_label()
+  {
     std::stringstream ss;
     ss << "label" << m_label_count++;
     return ss.str();
   }
 
-  void end_scope() {
+  void end_scope()
+  {
     size_t pop_count = m_vars.size() - m_scopes.back();
     m_output << "    add rsp, " << pop_count * 8 << "\n";
     m_stack_size -= pop_count;
-    for (int i = 0; i < pop_count; i++) {
+    for (int i = 0; i < pop_count; i++)
+    {
       m_vars.pop_back();
     }
     m_scopes.pop_back();
@@ -209,7 +221,7 @@ private:
   const NodeProg m_prog;
   std::stringstream m_output;
   size_t m_stack_size = 0;
-  std::vector<Var> m_vars {};
-  std::vector<size_t> m_scopes {};
+  std::vector<Var> m_vars{};
+  std::vector<size_t> m_scopes{};
   int m_label_count = 0;
 };

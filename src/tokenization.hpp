@@ -17,23 +17,25 @@ enum class TokenType
   eq,
   plus,
   star,
-  sub,
+  minus,
   div,
   open_curly,
   close_curly,
   if_
 };
 
-std::optional<int> bin_prec(TokenType type) {
-  switch(type) {
-    case TokenType::sub:
-    case TokenType::plus:
-      return 0;
-    case TokenType::div:
-    case TokenType::star:
-      return 1;
-    default:
-      return {};
+std::optional<int> bin_prec(TokenType type)
+{
+  switch (type)
+  {
+  case TokenType::minus:
+  case TokenType::plus:
+    return 0;
+  case TokenType::div:
+  case TokenType::star:
+    return 1;
+  default:
+    return {};
   }
 }
 
@@ -76,7 +78,8 @@ public:
           tokens.push_back({.type = TokenType::let});
           buf.clear();
         }
-        else if (buf == "if") {
+        else if (buf == "if")
+        {
           tokens.push_back({.type = TokenType::if_});
           buf.clear();
         }
@@ -129,18 +132,20 @@ public:
       else if (peek().value() == '-')
       {
         consume();
-        tokens.push_back({.type = TokenType::sub});
+        tokens.push_back({.type = TokenType::minus});
       }
       else if (peek().value() == '/')
       {
         consume();
         tokens.push_back({.type = TokenType::div});
       }
-      else if (peek().value() == '{') {
+      else if (peek().value() == '{')
+      {
         consume();
         tokens.push_back({.type = TokenType::open_curly});
       }
-      else if (peek().value() == '}') {
+      else if (peek().value() == '}')
+      {
         consume();
         tokens.push_back({.type = TokenType::close_curly});
       }

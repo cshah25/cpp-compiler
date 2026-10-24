@@ -19,11 +19,10 @@ struct NodeTermIdent
 
 struct NodeExpr;
 
-
-struct NodeTermParen{
-  NodeExpr * expr;
+struct NodeTermParen
+{
+  NodeExpr *expr;
 };
-
 
 struct NodeBinExprAdd
 {
@@ -37,19 +36,21 @@ struct NodeBinExprMulti
   NodeExpr *rhs;
 };
 
-struct NodeBinExprSub {
-    NodeExpr* lhs;
-    NodeExpr* rhs;
+struct NodeBinExprSub
+{
+  NodeExpr *lhs;
+  NodeExpr *rhs;
 };
 
-struct NodeBinExprDiv {
-    NodeExpr* lhs;
-    NodeExpr* rhs;
+struct NodeBinExprDiv
+{
+  NodeExpr *lhs;
+  NodeExpr *rhs;
 };
 
 struct NodeBinExpr
 {
-  std::variant<NodeBinExprAdd*, NodeBinExprMulti*, NodeBinExprSub*, NodeBinExprDiv*> var;
+  std::variant<NodeBinExprAdd *, NodeBinExprMulti *, NodeBinExprSub *, NodeBinExprDiv *> var;
 };
 
 struct NodeTerm
@@ -75,13 +76,15 @@ struct NodeStmtLet
 
 struct NodeStmt;
 
-struct NodeScope {
+struct NodeScope
+{
   std::vector<NodeStmt *> stmts;
 };
 
-struct NodeStmtIf {
-  NodeExpr * expr;
-  NodeScope * scope;
+struct NodeStmtIf
+{
+  NodeExpr *expr;
+  NodeScope *scope;
 };
 
 struct NodeStmt
@@ -105,7 +108,8 @@ public:
 
   std::optional<NodeTerm *> parse_term()
   {
-    if (auto int_lit = try_consume(TokenType::int_lit)) {
+    if (auto int_lit = try_consume(TokenType::int_lit))
+    {
       auto term_int_lit = m_allocator.alloc<NodeTermIntLit>();
       term_int_lit->int_lit = int_lit.value();
       auto term = m_allocator.alloc<NodeTerm>();
@@ -123,7 +127,8 @@ public:
     else if (auto open_paren = try_consume(TokenType::open_paren))
     {
       auto expr = parse_expr();
-      if (!expr.has_value()) {
+      if (!expr.has_value())
+      {
         std::cerr << "Expected expression" << std::endl;
         exit(EXIT_FAILURE);
       }
@@ -142,57 +147,72 @@ public:
 
   std::optional<NodeExpr *> parse_expr(int min_prec = 0)
   {
-    std::optional<NodeTerm*> term_lhs = parse_term();
-    //if this doesn't have a value
-    if (!term_lhs.has_value()) {
+    std::optional<NodeTerm *> term_lhs = parse_term();
+    // if this doesn't have a value
+    if (!term_lhs.has_value())
+    {
       return {};
-    } 
+    }
     // getting lhs expr
     auto expr_lhs = m_allocator.alloc<NodeExpr>();
     expr_lhs->var = term_lhs.value();
 
-    while (true) {
+    while (true)
+    {
       std::optional<Token> curr_tok = peek();
       std::optional<int> prec;
-      if (curr_tok.has_value()) {
+      if (curr_tok.has_value())
+      {
         prec = bin_prec(curr_tok->type);
-        if (!prec.has_value() || prec < min_prec) break;
-      } else break;
+        if (!prec.has_value() || prec < min_prec)
+          break;
+      }
+      else
+        break;
       Token op = consume();
       int next_min_prec = prec.value() + 1;
       auto expr_rhs = parse_expr(next_min_prec);
-      if (!expr_rhs.has_value()) {
+      if (!expr_rhs.has_value())
+      {
         std::cerr << "Unable to parse expression" << std::endl;
         exit(EXIT_FAILURE);
       }
       auto expr = m_allocator.alloc<NodeBinExpr>();
       auto expr_lhs2 = m_allocator.alloc<NodeExpr>();
-      if (op.type == TokenType::plus) {
+      if (op.type == TokenType::plus)
+      {
         auto add = m_allocator.alloc<NodeBinExprAdd>();
         expr_lhs2->var = expr_lhs->var;
         add->lhs = expr_lhs2;
         add->rhs = expr_rhs.value();
         expr->var = add;
-      } else if (op.type == TokenType::star) {
+      }
+      else if (op.type == TokenType::star)
+      {
         auto multi = m_allocator.alloc<NodeBinExprMulti>();
         expr_lhs2->var = expr_lhs->var;
         multi->lhs = expr_lhs2;
         multi->rhs = expr_rhs.value();
-        expr->var = multi; 
-      } else if (op.type == TokenType::sub) {
+        expr->var = multi;
+      }
+      else if (op.type == TokenType::minus)
+      {
         auto sub = m_allocator.alloc<NodeBinExprSub>();
         expr_lhs2->var = expr_lhs->var;
         sub->lhs = expr_lhs2;
         sub->rhs = expr_rhs.value();
         expr->var = sub;
-      } else if (op.type == TokenType::div) {
+      }
+      else if (op.type == TokenType::div)
+      {
         auto div = m_allocator.alloc<NodeBinExprDiv>();
         expr_lhs2->var = expr_lhs->var;
         div->lhs = expr_lhs2;
         div->rhs = expr_rhs.value();
         expr->var = div;
       }
-      else {
+      else
+      {
         assert(false); // unreachable
       }
       expr_lhs->var = expr;
@@ -200,10 +220,13 @@ public:
     return expr_lhs;
   }
 
-  std::optional<NodeScope *> parse_scope() {
-    if (!try_consume(TokenType::open_curly).has_value()) return {};
+  std::optional<NodeScope *> parse_scope()
+  {
+    if (!try_consume(TokenType::open_curly).has_value())
+      return {};
     auto scope = m_allocator.alloc<NodeScope>();
-    while (auto stmt = parse_stmt()) {
+    while (auto stmt = parse_stmt())
+    {
       scope->stmts.push_back(stmt.value());
     }
     try_consume(TokenType::close_curly, "Expected `}`");
@@ -252,30 +275,40 @@ public:
       stmt->var = stmt_let;
       return stmt;
     }
-    else if (peek().has_value() && peek().value().type == TokenType::open_curly) {
+    else if (peek().has_value() && peek().value().type == TokenType::open_curly)
+    {
       if (auto scope = parse_scope())
       {
         auto stmt = m_allocator.alloc<NodeStmt>();
         stmt->var = scope.value();
         return stmt;
-      } else {
+      }
+      else
+      {
         std::cerr << "Invalid Scope" << std::endl;
         exit(EXIT_FAILURE);
       }
     }
-    else if (auto if_ = try_consume(TokenType::if_)) {
+    else if (auto if_ = try_consume(TokenType::if_))
+    {
       try_consume(TokenType::open_paren, "Expected `(`");
       auto stmt_if = m_allocator.alloc<NodeStmtIf>();
-      if (auto expr = parse_expr()) {
+      if (auto expr = parse_expr())
+      {
         stmt_if->expr = expr.value();
-      } else {
+      }
+      else
+      {
         std::cerr << "Invalid Expression" << std::endl;
         exit(EXIT_FAILURE);
       }
       try_consume(TokenType::close_paren, "Expected `)`");
-      if (auto scope = parse_scope()) {
+      if (auto scope = parse_scope())
+      {
         stmt_if->scope = scope.value();
-      } else {
+      }
+      else
+      {
         std::cerr << "Invalid Scope" << std::endl;
         exit(EXIT_FAILURE);
       }
@@ -325,7 +358,8 @@ private:
     return m_tokens.at(m_index++);
   }
 
-  inline Token try_consume(TokenType type, const std::string & err_msg) {
+  inline Token try_consume(TokenType type, const std::string &err_msg)
+  {
     if (peek().has_value() && peek().value().type == type)
     {
       return consume();
@@ -337,7 +371,8 @@ private:
     }
   }
 
-  inline std::optional<Token> try_consume(TokenType type) {
+  inline std::optional<Token> try_consume(TokenType type)
+  {
     if (peek().has_value() && peek().value().type == type)
     {
       return consume();
