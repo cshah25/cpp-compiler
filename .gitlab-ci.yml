@@ -1,12 +1,15 @@
-image: gcc:latest
+image: alpine:latest
 
 stages:
   - build
   - test
 
-before_script:
-  - apt-get update -qq
-  - apt-get install -y -qq cmake make nasm binutils
+default:
+  tags:
+    - shared
+  before_script:
+    - apk update
+    - apk add --no-cache build-base cmake nasm binutils
 
 compile_hydro:
   stage: build
