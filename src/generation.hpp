@@ -16,12 +16,12 @@ public:
     struct TermVisitor
     {
       Generator *gen;
-      void operator()(const NodeTermIntLit *term_int_lit) const
+      void operator()(const NodeTermIntLit * term_int_lit) const
       {
         gen->m_output << "    mov rax, " << term_int_lit->int_lit.value.value() << "\n";
         gen->push("rax");
       };
-      void operator()(const NodeTermIdent *term_ident) const
+      void operator()(const NodeTermIdent * term_ident) const
       {
         if (!gen->m_vars.contains(term_ident->ident.value.value()))
         {
@@ -32,6 +32,9 @@ public:
         std::stringstream offset;
         offset << "QWORD [rsp + " << (gen->m_stack_size - var.stack_loc - 1) * 8 << "]\n";
         gen->push(offset.str());
+      };
+      void operator()(const NodeTermParen * term_paren) const {
+        gen->gen_expr(term_paren->expr);
       };
     };
     TermVisitor visitor({.gen = this});
