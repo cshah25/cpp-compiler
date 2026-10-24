@@ -1,4 +1,11 @@
 let x = (10 - 2 * 3) / 2;
-let y = 11;
-exit(x);
+{
+    let y = 2;
+    {
+        let z = 69;
+        exit(z);
+    }
+}
+let y = x + 5;
+exit(y);
 

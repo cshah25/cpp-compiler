@@ -29,7 +29,7 @@ public:
           exit(EXIT_FAILURE);
         }
         std::stringstream offset;
-        offset << "QWORD [rsp + " << (gen->m_stack_size - (*it).stack_loc - 1) * 8 << "]\n";
+        offset << "QWORD [rsp + " << (gen->m_stack_size - (*it).stack_loc - 1) * 8 << "]";
         gen->push(offset.str());
       };
       void operator()(const NodeTermParen * term_paren) const {
@@ -114,7 +114,7 @@ public:
         gen->gen_expr(stmt_exit->expr);
         gen->m_output << "    mov rax, 60\n";
         gen->pop("rdi");
-        gen->m_output << "    syscall";
+        gen->m_output << "    syscall\n";
       };
       void operator()(const NodeStmtLet *stmt_let) const
       {
@@ -122,7 +122,7 @@ public:
 
         if (it != gen->m_vars.cend())
         {
-          std::cerr << "Identified already used: " << stmt_let->ident.value.value() << std::endl;
+          std::cerr << "Identifier already used: " << stmt_let->ident.value.value() << std::endl;
           exit(EXIT_FAILURE);
         }
         gen->m_vars.push_back({.name = stmt_let->ident.value.value(), .stack_loc = gen->m_stack_size});
@@ -130,7 +130,11 @@ public:
       };
       void operator()(const NodeStmtScope *scope) const 
       {
-        
+        gen->begin_scope();
+        for (const NodeStmt * stmt: scope->stmts) {
+          gen->gen_stmt(stmt);
+        }
+        gen->end_scope();
       };
     };
 
@@ -161,6 +165,20 @@ private:
   {
     m_output << "    pop " << reg << "\n";
     m_stack_size--;
+  }
+
+  void begin_scope(){
+    m_scopes.push_back(m_vars.size());
+  }
+
+  void end_scope() {
+    size_t pop_count = m_vars.size() - m_scopes.back();
+    m_output << "    add rsp, " << pop_count * 8 << "\n";
+    m_stack_size -= pop_count;
+    for (int i = 0; i < pop_count; i++) {
+      m_vars.pop_back();
+    }
+    m_scopes.pop_back();
   }
 
   struct Var
