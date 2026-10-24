@@ -1,0 +1,26 @@
+image: gcc:latest
+
+stages:
+  - build
+  - test
+
+before_script:
+  - apt-get update -qq
+  - apt-get install -y -qq cmake make nasm binutils
+
+compile_hydro:
+  stage: build
+  script:
+    - make out
+  artifacts:
+    paths:
+      - build/hydro
+    expire_in: 1 hour
+
+test_execution:
+  stage: test
+  needs:
+    - compile_hydro
+  script:
+    - ./build/hydro ./test.hy
+    - test -f out
