@@ -97,8 +97,24 @@ public:
         tokens.push_back({.type = TokenType::int_lit, .value = buf});
         buf.clear();
       }
-      else if (peek().value() == '/' && peek(1).has_value() && peek(1).value() == '/')
-      {
+      else if (peek() == '/' && peek(1) == '/') {
+        consume();
+        consume();
+        while (peek() && peek() != '\n') {
+          consume();
+        }
+      }
+      else if (peek() == '/' && peek(1) == '*') {
+        consume();
+        consume();
+        while (peek()) {
+          if (peek() == '*' && peek(1) == '/') {
+            consume(); // *
+            consume(); // /
+            break;
+          }
+          consume();
+        }
       }
       else if (peek().value() == '(')
       {
