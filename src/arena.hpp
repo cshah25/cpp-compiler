@@ -13,7 +13,7 @@ public:
   }
 
   ArenaAllocator(const ArenaAllocator &) = delete;
-  ArenaAllocator &operator=(const ArenaAllocator &) = delete;sss
+  ArenaAllocator &operator=(const ArenaAllocator &) = delete;
 
   ArenaAllocator(ArenaAllocator &&other) noexcept
       : m_size{std::exchange(other.m_size, 0)}, m_buffer{std::exchange(other.m_buffer, nullptr)}, m_offset{std::exchange(other.m_offset, nullptr)}

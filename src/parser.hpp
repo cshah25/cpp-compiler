@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cassert>
+#include <optional>
 #include <variant>
 
 #include "./arena.hpp"
@@ -149,7 +150,7 @@ public:
       std::optional<int> prec;
       if (curr_tok.has_value())
       {
-        prec = bin_prec(curr_tok->type);s
+        prec = bin_prec(curr_tok->type);
         if (!prec.has_value() || prec < min_prec)
         {
           break;

@@ -3,6 +3,7 @@
 #include "parser.hpp"
 #include <algorithm>
 #include <iostream>
+#include <sstream>
 
 class Generator
 {
