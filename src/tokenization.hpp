@@ -1,6 +1,7 @@
 #pragma once
 
 #include <optional>
+#include <ostream>
 #include <string>
 #include <vector>
 #include <iostream>
@@ -108,13 +109,11 @@ public:
         consume();
         consume();
         while (peek()) {
-          if (peek() == '*' && peek(1) == '/') {
-            consume(); // *
-            consume(); // /
-            break;
-          }
+          if (peek() == '*' && peek(1) && peek(1) == '/') break;
           consume();
         }
+        if (peek()) consume();
+        if (peek()) consume();
       }
       else if (peek().value() == '(')
       {

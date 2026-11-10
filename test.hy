@@ -4,8 +4,9 @@ let x = 1;
 if (x - 1) {
     exit(69);
 }
-/* 
+/*
+/*
+//alskdfj;lakjdf;lakjdsfa;lksdjfa;lsdfkjal;skdfja;lkdfjasdkfjaskldfjj
 exit(4);
-exit(1);
 */
-exit(99);
+exit(1);
