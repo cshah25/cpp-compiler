@@ -1,7 +1,6 @@
 #pragma once
 
 #include <cstddef>
-#include <cstdlib>
 #include <memory>
 #include <utility>
 
@@ -55,7 +54,7 @@ public:
     ~ArenaAllocator()
     {
         // memory leaks are possible (e.g. when storing std::vector objects or
-        // other non-trivially destructable objects in the allocator).
+        // other non-trivially destructible objects in the allocator).
         // This could be changed, it would come with additional
         // runtime overhead and therefore is not implemented.
         delete[] m_buffer;

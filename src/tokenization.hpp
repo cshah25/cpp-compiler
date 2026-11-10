@@ -21,7 +21,7 @@ enum class TokenType {
     if_
 };
 
-std::optional<int> bin_prec(TokenType type)
+inline std::optional<int> bin_prec(const TokenType type)
 {
     switch (type) {
     case TokenType::minus:
