@@ -1,47 +1,46 @@
-#include <iostream>
 #include <fstream>
+#include <iostream>
+#include <optional>
 #include <sstream>
 #include <vector>
-#include <optional>
 
 #include "./generation.hpp"
 
-int main(int argc, char **argv)
+int main(int argc, char* argv[])
 {
-  if (argc != 2)
-  {
-    std::cerr << "Incorrect usage. Correct usage is..." << std::endl;
-    std::cerr << "hydro <input.hy>" << std::endl;
-    return EXIT_FAILURE;
-  }
-  std::string contents;
-  {
-    std::stringstream content_stream;
-    std::fstream input(argv[1], std::ios::in);
-    content_stream << input.rdbuf();
-    contents = content_stream.str();
-  }
+    if (argc != 2) {
+        std::cerr << "Incorrect usage. Correct usage is..." << std::endl;
+        std::cerr << "hydro <input.hy>" << std::endl;
+        return EXIT_FAILURE;
+    }
 
-  Tokenizer tokenizer(std::move(contents));
-  std::vector<Token> tokens = tokenizer.tokenize();
+    std::string contents;
+    {
+        std::stringstream contents_stream;
+        std::fstream input(argv[1], std::ios::in);
+        contents_stream << input.rdbuf();
+        contents = contents_stream.str();
+    }
 
-  Parser parser(std::move(tokens));
-  std::optional<NodeProg> prog = parser.parse_prog();
+    Tokenizer tokenizer(std::move(contents));
+    std::vector<Token> tokens = tokenizer.tokenize();
 
-  if (!prog.has_value())
-  {
-    std::cerr << "Invalid program" << std::endl;
-  }
+    Parser parser(std::move(tokens));
+    std::optional<NodeProg> prog = parser.parse_prog();
 
-  Generator generator(prog.value());
+    if (!prog.has_value()) {
+        std::cerr << "Invalid program" << std::endl;
+        exit(EXIT_FAILURE);
+    }
 
-  {
-    std::fstream file("out.asm", std::ios::out);
-    file << generator.gen_prog();
-  }
+    Generator generator(prog.value());
+    {
+        std::fstream file("out.asm", std::ios::out);
+        file << generator.gen_prog();
+    }
 
-  system("nasm -felf64 out.asm");
-  system("ld -o out out.o");
+    system("nasm -felf64 out.asm");
+    system("ld -o out out.o");
 
-  return EXIT_SUCCESS;
+    return EXIT_SUCCESS;
 }
