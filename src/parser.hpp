@@ -81,12 +81,29 @@ struct NodeScope
   std::vector<NodeStmt *> stmts;
 };
 
+struct NodeIfPred;
+
+struct NodeIfPredElif {
+  NodeExpr * expr{};
+  NodeScope * scope{};
+  std::optional<NodeIfPred *> pred;
+};
+
+struct NodeIfPredElse {
+  NodeScope * scope;
+};
+
+struct NodeIfPred {
+  std::variant<NodeIfPredElif*, NodeIfPredElse*> var; 
+};
+
 struct NodeStmtIf
 {
   NodeExpr *expr;
   NodeScope *scope;
 };
 
+// TODO: use using instead of struct
 struct NodeStmt
 {
   std::variant<NodeStmtExit *, NodeStmtLet *, NodeScope *, NodeStmtIf *> var;
