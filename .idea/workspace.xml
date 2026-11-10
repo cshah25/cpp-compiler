@@ -27,9 +27,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b7994f93-9ae3-452c-ba34-18a151140226" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/arena.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/arena.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/generation.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/generation.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/parser.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/parser.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tokenization.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/tokenization.hpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,6 +46,65 @@
   </component>
   <component name="MacroExpansionManager">
     <option name="directoryName" value="VbkWzmDe" />
+  </component>
+  <component name="NextEditCompletionFeaturesState">
+    <decayedCancelled>
+      <entry key="MS100" value="1.3344842048895862" />
+      <entry key="MS500" value="2.030202352682803" />
+      <entry key="S2" value="5.040842693920911" />
+      <entry key="S5" value="11.749551544942348" />
+      <entry key="S10" value="20.539298415340372" />
+      <entry key="S30" value="32.97734128154815" />
+      <entry key="S60" value="37.57154247016365" />
+      <entry key="M2" value="40.17193020825853" />
+      <entry key="M5" value="41.84012060842396" />
+      <entry key="M10" value="42.41516950170773" />
+      <entry key="M15" value="42.6090174205739" />
+      <entry key="M30" value="42.80395871889901" />
+      <entry key="H1" value="42.90184144726973" />
+      <entry key="H2" value="42.95088619365558" />
+      <entry key="H4" value="42.975434457832186" />
+      <entry key="D1" value="42.99590454255936" />
+      <entry key="W1" value="42.999414905246304" />
+    </decayedCancelled>
+    <decayedSelected>
+      <entry key="MS100" value="0.0" />
+      <entry key="MS500" value="0.0" />
+      <entry key="S2" value="0.0" />
+      <entry key="S5" value="0.0" />
+      <entry key="S10" value="0.0" />
+      <entry key="S30" value="0.0" />
+      <entry key="S60" value="0.0" />
+      <entry key="M2" value="0.0" />
+      <entry key="M5" value="0.0" />
+      <entry key="M10" value="0.0" />
+      <entry key="M15" value="0.0" />
+      <entry key="M30" value="0.0" />
+      <entry key="H1" value="0.0" />
+      <entry key="H2" value="0.0" />
+      <entry key="H4" value="0.0" />
+      <entry key="D1" value="0.0" />
+      <entry key="W1" value="0.0" />
+    </decayedSelected>
+    <decayedShown>
+      <entry key="MS100" value="1.2433309299093014" />
+      <entry key="MS500" value="1.9920366699867469" />
+      <entry key="S2" value="5.023870820635509" />
+      <entry key="S5" value="11.734383742299842" />
+      <entry key="S10" value="20.524362738656674" />
+      <entry key="S30" value="32.9682878678319" />
+      <entry key="S60" value="37.56620353793009" />
+      <entry key="M2" value="40.169025212893686" />
+      <entry key="M5" value="41.838897380037494" />
+      <entry key="M10" value="42.41454726536382" />
+      <entry key="M15" value="42.60860020402609" />
+      <entry key="M30" value="42.803748906412686" />
+      <entry key="H1" value="42.90173623845469" />
+      <entry key="H2" value="42.95083351341446" />
+      <entry key="H4" value="42.97540809872939" />
+      <entry key="D1" value="42.99590014673708" />
+      <entry key="W1" value="42.99941427720705" />
+    </decayedShown>
   </component>
   <component name="ProjectApplicationVersion">
     <option name="ide" value="CLion" />

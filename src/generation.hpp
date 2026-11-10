@@ -6,7 +6,7 @@
 
 class Generator {
 public:
-    inline explicit Generator(NodeProg prog)
+    explicit Generator(NodeProg prog)
         : m_prog(std::move(prog))
     {
     }
