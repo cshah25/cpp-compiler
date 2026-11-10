@@ -3,6 +3,8 @@ let x = 1;
 // test comment
 if (x - 1) {
     exit(69);
+} else if () {
+
 }
 /*
 /*

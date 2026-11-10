@@ -18,3 +18,10 @@ compute_expr(min_prec):
 
   return result
 ```
+
+Dangling else problem
+[https://en.wikipedia.org/wiki/Dangling_else](https://en.wikipedia.org/wiki/Dangling_else)
+
+```
+if (a) if (b) s; else s2;
+```
