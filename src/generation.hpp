@@ -78,7 +78,7 @@ public:
         gen.gen_expr(multi->lhs);
         gen.pop("rax");
         gen.pop("rbx");
-        gen.m_output << "    mul rbx\n";
+        gen.m_output << "    imul rax, rbx\n";
         gen.push("rax");
       }
 
@@ -88,7 +88,8 @@ public:
         gen.gen_expr(div->lhs);
         gen.pop("rax");
         gen.pop("rbx");
-        gen.m_output << "    div rbx\n";
+        gen.m_output << "    cqo\n";
+        gen.m_output << "    idiv rbx\n";
         gen.push("rax");
       }
     };
