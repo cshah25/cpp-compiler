@@ -1,7 +1,9 @@
-if (0) {
-  exit(0);
-} elif (0) {
-  exit(1);
+let x = 7;
+if (1) {
+  x = 1;
+} elif (1) {
+  x = 2;
 } else {
-  exit(2);
+  x = 3;
 }
+exit(x);
