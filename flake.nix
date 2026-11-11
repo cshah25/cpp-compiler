@@ -38,6 +38,7 @@
             echo "• Linker: $(ld -v)"
             echo "• GCC:    $(gcc --version | head -n 1)"
             echo "----------------------------------------"
+            zsh
           '';
         };
       });
