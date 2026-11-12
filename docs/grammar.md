@@ -26,10 +26,16 @@ $$
     \end{cases} \\
     [\text{BinExpr}] &\to
     \begin{cases}
-        [\text{Expr}] * [\text{Expr}] & \text{prec} = 1 \\
-        [\text{Expr}] / [\text{Expr}] & \text{prec} = 1 \\
-        [\text{Expr}] + [\text{Expr}] & \text{prec} = 0 \\
-        [\text{Expr}] - [\text{Expr}] & \text{prec} = 0 \\
+        [\text{Expr}] * [\text{Expr}] & \text{prec} = 3 \\
+        [\text{Expr}] / [\text{Expr}] & \text{prec} = 3 \\
+        [\text{Expr}] + [\text{Expr}] & \text{prec} = 2 \\
+        [\text{Expr}] - [\text{Expr}] & \text{prec} = 2 \\
+        [\text{Expr}] \lt [\text{Expr}] & \text{prec} = 1 \\
+        [\text{Expr}] \lt= [\text{Expr}] & \text{prec} = 1 \\
+        [\text{Expr}] \gt [\text{Expr}] & \text{prec} = 1 \\
+        [\text{Expr}] \gt= [\text{Expr}] & \text{prec} = 1 \\
+        [\text{Expr}] == [\text{Expr}] & \text{prec} = 0 \\
+        [\text{Expr}] != [\text{Expr}] & \text{prec} = 0 \\
     \end{cases} \\ 
     [\text{Term}] &\to
     \begin{cases}
